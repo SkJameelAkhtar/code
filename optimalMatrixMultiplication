@@ -1,0 +1,66 @@
+#include<stdio.h>
+#include<stdlib.h>
+int n,i,j,s[10][10];
+void printOptimal(int i, int j){
+	if (i==j){
+		printf(" A%d ",i);
+	}
+	else{
+		printf("(");
+		printOptimal(i, s[i][j]);
+		printOptimal(s[i][j]+1,j);
+		printf(")");
+	}
+}
+int main(){
+	int l,k,q;
+	printf("Enter number of matrices:\n");
+	scanf("%d",&n);
+	int p[n+1],m[n+1][n+1];
+	printf("Enter P array values:\n");
+	
+	for(i=0;i<n+1;i++){
+		printf("p[%d] = ",i);
+		scanf("%d",&p[i]);		
+	}
+	for(i=0;i<n+1;i++){
+		for(j=0;j<n+1;j++){
+			s[i][j]=0;
+			m[i][j]=0;
+		}
+	}
+	for(l=2;l<n+1;l++){
+		for(i=0;i<n-l+2;i++){
+			j=i+l-1;
+			m[i][j]=100000;
+			for(k=i;k<j;k++){
+				q=m[i][k] + m[k+1][j] + ((p[i-1]) * (p[k]) * (p[j]));
+				if (q<m[i][j]){
+					m[i][j]=q;
+					s[i][j]=k;
+				}
+			}
+		}
+	}
+	printf("%d %d",i,j);
+	printf("\n \n m Table \n \n");
+	for (i=1;i<n+1;i++){
+		for (j=1;j<n+1;j++){
+			printf("%d\t",m[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n \n \ns Table\n \n");
+	for (i=1;i<n+1;i++){
+		for (j=1;j<n+1;j++){
+			printf("%d\t",s[i][j]);
+		}
+		printf("\n");
+	}
+//	printf("%d %d",i,j);
+	i=1;j=n;
+	printOptimal(i,j);
+	printf("\n\n");
+	return 0;	
+}
+
